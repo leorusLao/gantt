@@ -40,7 +40,7 @@ document.write('<script src="' + bootPATH + 'libs/utilities.js" type="text/javas
 document.write('<script src="' + bootPATH + 'libs/forms.js" type="text/javascript"></script>');
 document.write('<script src="' + bootPATH + 'libs/date.js" type="text/javascript"></script>');
 document.write('<script src="' + bootPATH + 'libs/dialogs.js" type="text/javascript"></script>');
-//document.write('<script src="' + bootPATH + 'libs/layer/layer.js" type="text/javascript"></script>');
+document.write('<script src="' + bootPATH + 'libs/layer/layer.js" type="text/javascript"></script>');
 document.write('<script src="' + bootPATH + 'libs/layout.js" type="text/javascript"></script>');
 document.write('<script src="' + bootPATH + 'libs/i18nJs.js" type="text/javascript"></script>');
 document.write('<script src="' + bootPATH + 'libs/jquery/dateField/jquery.dateField.js" type="text/javascript"></script>');

@@ -1,0 +1,386 @@
+body{
+	margin: 0;
+}
+.hidden{
+	display: none;
+}
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+}
+.left{
+	float: left;
+}
+.right{
+	float: right;
+}
+
+.win-body{
+	position: absolute;
+	width: 96%;
+	top: 0;
+	bottom: 40px;
+	overflow: hidden;
+	background: rgb(249,249,250);
+	padding: 0 2%;
+}
+.win-tabs-header{
+	width: 100%;
+	background: rgb(249,249,250);
+	margin-top: 5px;
+	border-top: 1px solid #b6b6b6;
+}
+.win-tabs-header ul{
+	padding: 0;
+	margin: 0;
+	overflow: auto;
+}
+.win-tabs-header ul li{
+	list-style: none;
+	float: left;
+	padding: 5px 15px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: .3s;
+	border-top: 3px solid rgb(249,249,250);
+	border-left: 1px solid rgb(249,249,250);
+	border-right: 1px solid rgb(249,249,250);
+}
+.win-tabs-header ul li:hover{
+	border-top-color: rgb(190,190,192);
+	background: rgb(237,237,240);
+}
+.win-tabs-header ul li.active{
+	border-top-color: rgb(10,132,255);
+	border-left-color: rgb(223,223,224);
+	border-right-color: rgb(223,223,224);
+}
+
+.win-tabs {
+    width: 100%;
+    height: calc(100% - 251px);
+    position: relative;
+}
+
+.win-tabs > div {
+	height: 100%;
+}
+
+.win-tabs .win-panel{
+	position: absolute;
+	width: 100%;
+	top: 0;
+	bottom: 0;
+}
+
+.win-tabs .win-panel .win-toolbar {
+    width: 96%;
+    height: 30px;
+    padding: 0 2%;
+    line-height: 24px;
+}
+.win-tabs .win-panel .win-datagrid{
+	width: calc(100% - 2px);
+	height: calc(100% - 34px);
+	border: 1px solid darkgray;
+}
+
+.win-full-textarea{
+	width: 98%;
+	height: 90%;
+	font-size: 9pt;
+	line-height: 19px;
+	padding: 1%;
+	resize: none;
+}
+
+.win-button{
+	padding: 0 8px;
+    border: 1px solid #A9ACB5;
+    background: #EBEDF2 url(./images/button.gif) repeat-x 0 0;
+    font-size: 9pt;
+    font-family: Tahoma,Verdana,宋体;
+    line-height: 22px;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    zoom: 1;
+    cursor: pointer;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    vertical-align: middle;
+    outline: none;
+}
+.win-button {
+    background: url(./images/button.gif) repeat-x 0px 50%;
+    border: solid 1px #b5afaf;
+    color: #222;
+}
+.win-button {
+    border-radius: 2px;
+}
+
+.win-button:hover{
+	background: url(./images/hover.gif) repeat-x 0px 50%;
+}
+
+.win-grid-header{
+	background: rgb(240,240,240);
+}
+
+.win-grid-header table{
+	width: calc(100% - 17px);
+}
+
+.win-grid-header table th {
+    cursor: default;
+    font-size: 9pt;
+    font-family: Tahoma, Verdana;
+    line-height: 25px;
+    text-align: left;
+    white-space: nowrap;
+    word-break: keep-all;
+    font-weight: normal;
+    text-indent: 2%;
+}
+
+.win-grid-header table th {
+    background: url(images/grid/header.gif) repeat-x scroll left top #e2e4e6;
+    border-right: #c5c5c5 1px solid;
+    border-bottom: #c5c5c5 1px solid;
+}
+
+.win-grid-body {
+    width: 100%;
+    height: calc(100% - 26px);
+    background: #fff;
+    overflow-y: scroll;
+}
+
+.win-grid-body table{
+	width: 100%;
+}
+
+.win-grid-body table tr{
+	background: #fefee9;
+}
+
+.win-grid-body table tr:hover{
+	background: #dfe8f6;
+}
+
+.win-grid-body table tr.win-grid-row-selected{
+	background: #dfe8f6;
+}
+
+.win-grid-body table td {
+    cursor: default;
+    font-size: 9pt;
+    font-family: Tahoma, Verdana;
+    line-height: 25px;
+    text-align: left;
+    white-space: nowrap;
+    word-break: keep-all;
+    font-weight: normal;
+    text-indent: 2%;
+}
+
+.win-grid-body table td {
+    border-right: #c5c5c5 1px solid;
+    border-bottom: #c5c5c5 1px solid;
+}
+
+.win-grid-body table td input{
+	width: 90%;
+	display: none;
+}
+
+.win-grid-body table td select{
+	width: 95%;
+	display: none;
+}
+
+.win-grid-body table td div{
+	display: none;
+}
+
+.win-grid-body table td.win-grid-cell-selected {
+    background: #addffe;
+}
+
+.win-grid-body table td.win-grid-cell-selected span{
+	display: none;
+}
+
+.win-grid-body table td.win-grid-cell-selected input,
+.win-grid-body table td.win-grid-cell-selected select{
+	display: inline;
+}
+
+.win-grid-body table td.win-grid-cell-selected div{
+	display: inline;
+}
+
+.win-grid-body table td a{
+	cursor: pointer;
+	margin-right: 3px;
+	text-decoration: none;
+	color: #000;
+}
+
+.win-footer{
+	position: absolute;
+	width: 98%;
+	height: 30px;
+	bottom: 0;
+	padding: 6px 1%;
+	text-align: right;
+	background: rgb(249,249,250);
+}
+.win-footer button{
+	height: 28px;
+	padding: 0 20px;
+	font-size: 13px;
+	border: 1px solid rgb(173,173,173);
+	background: rgb(225,225,225);
+	cursor: pointer;
+	transition: .5s;
+}
+.win-footer button.expect{
+	border: 1px solid rgb(0,120,215);
+}
+.win-footer button:hover{
+	border: 1px solid rgb(0,120,215);
+	background: rgb(229,241,251);
+}
+.Wdate{
+	width: 142px !important;
+}
+
+#twin_batchcheck_contain #twin_batchcheck_look,
+#twin_batchcheck_contain #twin_batchcheck_del{
+	display: none;
+}
+
+#twin_batchcheck_contain.batchcheckYes #twin_batchcheck_look,
+#twin_batchcheck_contain.batchcheckYes #twin_batchcheck_del{
+	display: inline;
+}
+
+#twin_batchcheck_contain.batchcheckYes #twin_batchcheck_upload{
+	display: none;
+}
+
+.win-tabs .win-tab-table{
+	width: 100%;
+	border: 1px solid gray;
+	height: calc(100% - 2px);
+	background: #fff;
+}
+.win-tabs .win-tab-table tr td{
+	font-size: 12px;
+}
+.win-tabs .win-tab-table tr td input[type=text]{
+	width: 98%;
+	height: 18px;
+	font-size: 12px;
+}
+.win-tabs .win-tab-table tr td textarea{
+	width: 98%;
+	font-size: 12px;
+	height: 100px;
+	resize: none;
+}
+
+.win-member-btn{
+	background: url(images/table/table.png) no-repeat center;
+	border: 0;
+	cursor: pointer;
+	width: 16px;
+}
+
+.win-member-btn:hover{
+	background: url(images/table/table-hover.png) no-repeat center;
+}
+
+/*switch*/
+.onoffswitch {
+	display: inline-block;
+    position: relative;
+    width: 50px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    top: 3px;
+}
+
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+.onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 24px;
+    padding: 0;
+    line-height: 24px;
+    font-size: 12px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "Max";
+    padding-left: 5px;
+    background-color: #4FACDB;
+    color: #FFFFFF;
+}
+
+.onoffswitch-inner:after {
+    content: "Min";
+    padding-right: 5px;
+    background-color: #000;
+    color: #FAFAFA;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block;
+    width: 12px;
+    margin: 4.5px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 25px;
+    border: 2px solid #999999;
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
