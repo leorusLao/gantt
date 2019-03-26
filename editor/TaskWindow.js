@@ -27,17 +27,18 @@ TaskWindow.prototype.initControls = function(){
 	
 	//Code
 	this.code = this.get('#twin_code');
-	//Name  Milestone
+	//Name
 	this.name = this.get('#twin_name');
-	this.startIsMilestone = this.get('#twin_startIsMilestone');
 	
 	//Duration
 	this.duration = this.get('#twin_duration');
 	
 	//Start
 	this.start = this.get('#twin_start');
+	this.startIsMilestone = this.get('#twin_startIsMilestone');
 	//End 
 	this.end = this.get('#twin_end');
+	this.endIsMilestone = this.get('#twin_endIsMilestone');
 	
 	//Status
 	this.status = this.get('#twin_status');
@@ -197,6 +198,7 @@ TaskWindow.prototype.setData = function(){
 	//Name  Milestone
 	this.name.val(task.name);
 	this.startIsMilestone[0].checked = task.startIsMilestone;
+	this.endIsMilestone[0].checked = task.endIsMilestone;
 	//Duration
 	this.duration.val(task.duration || 1);
 	//Start
@@ -223,10 +225,11 @@ TaskWindow.prototype.getData = function(){
 	var task = {
 		"code": this.code.val(),
 		"name": this.name.val(),
-		"startIsMilestone": this.startIsMilestone[0].checked,
 		"duration": this.duration.val(),
 		"start": this.start.val(),
+		"startIsMilestone": this.startIsMilestone[0].checked,
 		"end": this.end.val(),
+		"endIsMilestone": this.endIsMilestone[0].checked,
 		"status": this.status.val(),
 		"progress": this.progress.val(),
 		"resources": [],

@@ -169,7 +169,6 @@ GridEditor.prototype.refreshTaskRow = function (task) {
   row.find("[name=start]").val(new Date(task.start).format()).updateOldValue().prop("readonly",!canWrite || task.depends || !(task.canWrite  || this.master.permissions.canWrite) ); // called on dates only because for other field is called on focus event
   row.find("[name=endIsMilestone]").prop("checked", task.endIsMilestone);
   row.find("[name=end]").val(new Date(task.end).format()).prop("readonly",!canWrite || task.isParent() && task.master.shrinkParent).updateOldValue();
-  row.find("[name=depends]").val(task.depends);
   row.find(".taskAssigs").html(task.getAssigsString());
 
   row.find(".serial").html(task.serial);
@@ -724,3 +723,45 @@ GridEditor.prototype.openFullEditor = function (task, editOnlyAssig) {
 
 
 };
+
+
+GridEditor.prototype.updateTask = function (task, taskData) {
+  
+  task.master.beginTransaction();
+  //code
+  task.code = taskData.code;
+  //name
+  task.name = taskData.name;
+  
+  //start end
+  var start = Date.parseString(taskData.start).getTime();
+  var endTime = computeEndByDuration(start, taskData.duration);
+  task.setPeriod(start, endTime);
+
+  //Milestone
+  task.startIsMilestone = taskData.startIsMilestone;
+  task.endIsMilestone = taskData.endIsMilestone;
+  
+  //resources
+  task.resources = taskData.resources;
+  //predecessors
+  var oldPredecessors = task.predecessors;
+  task.predecessors = taskData.predecessors;
+  // update links
+  var linkOK = this.master.updateLinks(task);
+  if(linkOK){
+    this.master.changeTaskDeps(task);
+  }
+
+  //stetus
+  task.status = taskData.status;
+
+  //progess
+  task.progress = taskData.progress;
+  
+  //note
+  task.note = taskData.note;
+  
+  task.master.endTransaction();
+  
+}

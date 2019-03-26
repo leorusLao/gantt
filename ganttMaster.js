@@ -348,16 +348,20 @@ GanttMaster.prototype.updateSerialString = function (task, row) {
       task.serial = pno;
       pno++;
     }else{
-      var par = task.getParent(),
-        childs = par.getChildren(),
-        no = 1; 
-    for(var j=0;j<childs.length;j++){
-      if(childs[j]==task){
-        no = j+1;
-        break;
+      var par = task.getParent();
+      if(par){
+        var childs = par ? [] : par.getChildren(),
+            no = 1;
+        for(var j=0;j<childs.length;j++){
+          if(childs[j]==task){
+            no = j+1;
+            break;
+          }
+        }
+        task.serial = par.serial + "-" + no;
+      }else{
+        task.serial = pno;
       }
-    }
-      task.serial = par.serial + "-" + no;
     }
   }
 };
@@ -876,6 +880,7 @@ GanttMaster.prototype.updateLinks = function (task) {
   //var prof= new Profiler("gm_updateLinks");
 
   // defines isLoop function
+  // task:前置  target:当前  visited:??
   function isLoop(task, target, visited) {
     //var prof= new Profiler("gm_isLoop");
     //console.debug("isLoop :"+task.name+" - "+target.name);
@@ -930,38 +935,38 @@ GanttMaster.prototype.updateLinks = function (task) {
     //prof.stop();
     return loop;
   }
-
   //remove my depends
   this.links = this.links.filter(function (link) {
     return link.to != task;
   });
 
   var todoOk = true;
-  if (task.depends) {
-
+  
+  if (task.predecessors && task.predecessors.length > 0) {
+    
     //cannot depend from an ancestor
     var parents = task.getParents();
     //cannot depend from descendants
     var descendants = task.getDescendant();
 
-    var deps = task.depends.split(",");
+    //var deps = task.depends.split(",");
+    var deps = task.predecessors;
+    
     var newDepsString = "";
 
     var visited = [];
     var depsEqualCheck = [];
+    
     for (var j = 0; j < deps.length; j++) {
-      var depString = deps[j]; // in the form of row(lag) e.g. 2:3,3:4,5
-      var supStr =depString;
+      
+      var supObj = deps[j];
+      var supStr = supObj.Id;
+      var type = supObj.Type;
       var lag = 0;
-      var pos = depString.indexOf(":");
-      if (pos>0){
-        supStr=depString.substr(0,pos);
-        var lagStr=depString.substr(pos+1);
-        lag=Math.ceil((stringToDuration(lagStr)) / Date.workingPeriodResolution) * Date.workingPeriodResolution;
-      }
-
+      lag = supObj.Lag;
+      
       var sup = this.tasks[parseInt(supStr)-1];
-
+      
       if (sup) {
         if (parents && parents.indexOf(sup) >= 0) {
           this.setErrorOnTransaction("\""+task.name + "\"\n" + GanttMaster.messages.CANNOT_DEPENDS_ON_ANCESTORS + "\n\"" + sup.name+"\"");
@@ -980,15 +985,15 @@ GanttMaster.prototype.updateLinks = function (task) {
           todoOk = false;
 
         } else {
-          this.links.push(new Link(sup, task, lag));
+          this.links.push(new Link(sup, task, lag, type));
           newDepsString = newDepsString + (newDepsString.length > 0 ? "," : "") + supStr+(lag==0?"":":"+durationToString(lag));
         }
-
+        
         if (todoOk)
           depsEqualCheck.push(sup);
       }
     }
-    task.depends = newDepsString;
+    //task.depends = newDepsString;
   }
   //prof.stop();
 
