@@ -1,0 +1,32 @@
+body .layui-layer-task .layui-layer-title{
+	background: #fff;
+	color: #000;
+	border: none;
+	height: 30px;
+	line-height: 30px;
+	padding: 0 80px 0 10px;
+	font-size: 13px;
+}
+body .layui-layer-task .layui-layer-setwin {
+    position: absolute;
+	right: 0px;
+	top: 0px;
+	font-size: 0;
+	line-height: initial;
+	height: 30px;
+	width: 30px;
+}
+body .layui-layer-task .layui-layer-setwin a{
+	height: 30px;
+	width: 30px;
+	margin-left: 0;
+}
+body .layui-layer-task .layui-layer-setwin a.layui-layer-ico{
+	background: url(./close.png) no-repeat center;
+}
+body .layui-layer-task .layui-layer-setwin a:hover{
+	background: rgb(232,17,35) url(./close-w.png) no-repeat center;
+}
+body .layui-layer-task .layui-layer-btn{border-top:1px solid #E9E7E7}
+body .layui-layer-task .layui-layer-btn a{background:#333;}
+body .layui-layer-task .layui-layer-btn .layui-layer-btn1{background:#999;}
