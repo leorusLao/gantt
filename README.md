@@ -1,6 +1,6 @@
-jQueryGantt
+Gantt
 ===========
-jQuery Gantt editor has been written by Roberto Bicchierai and Silvia Chelazzi
+Gantt editor has been written by Roberto Bicchierai and Silvia Chelazzi
 
 These are some key features:
 * jQuery based 3.2
