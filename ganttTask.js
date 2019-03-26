@@ -953,7 +953,7 @@ Task.prototype.outdent = function () {
   //console.debug("outdent", this);
 
   //a level must be >1 -> cannot escape from root
-  if (this.level <= 1)
+  if (this.level < 1)
     return false;
 
   var ret = false;
@@ -1052,7 +1052,7 @@ Task.prototype.moveDown = function () {
 
   //a row below must exist, and cannot move root task
   var row = this.getRow();
-  if (row >= this.master.tasks.length - 1 || row == 0)
+  if (row >= this.master.tasks.length - 1)
     return false;
 
   var ret = false;

@@ -987,9 +987,9 @@ GanttMaster.prototype.outdentCurrentTask = function () {
   var self = this;
   if (self.currentTask) {
     var par = self.currentTask.getParent();
-    //can outdent if you have canRight on current task and on its parent and canAdd on grandfather
-    if (!self.currentTask.canWrite || !par.canWrite || !par.getParent() || !par.getParent().canAdd)
-    return;
+
+    if (!self.currentTask.canWrite || !par || !par.canWrite)
+      return;
 
     self.beginTransaction();
     self.currentTask.outdent();

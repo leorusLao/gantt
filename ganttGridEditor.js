@@ -63,10 +63,10 @@ GridEditor.prototype.fillEmptyLines = function () {
       var lastTask;
       var start = new Date().getTime();
       var level = 0;
-      if (master.tasks[0]) {
+      /*if (master.tasks[0]) {
         start = master.tasks[0].start;
         level = master.tasks[0].level + 1;
-      }
+      }*/
 
       //fill all empty previouses
       var cnt=0;
