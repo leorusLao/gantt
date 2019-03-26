@@ -50,8 +50,8 @@ document.write('<script src="' + bootPATH + 'libs/jquery/svg/jquery.svgdom.1.8.j
 //document.write('<script src="' + bootPATH + 'libs/upload.js" type="text/javascript"></script>');
 
 //editor
-//document.write('<script src="' + bootPATH + 'editor/Window.js" type="text/javascript"></script>');
-//document.write('<script src="' + bootPATH + 'editor/TaskWindow.js" type="text/javascript"></script>');
+document.write('<script src="' + bootPATH + 'editor/Window.js" type="text/javascript"></script>');
+document.write('<script src="' + bootPATH + 'editor/TaskWindow.js" type="text/javascript"></script>');
 //document.write('<script src="' + bootPATH + 'editor/TaskLookWindow.js" type="text/javascript"></script>');
 //document.write('<script src="' + bootPATH + 'editor/DepartmentWindow.js" type="text/javascript"></script>');
 //document.write('<script src="' + bootPATH + 'editor/SupplierWindow.js" type="text/javascript"></script>');

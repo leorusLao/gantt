@@ -659,7 +659,34 @@ function showBaselineInfo (event,element){
 </script>
 
 
-
+<script type="text/javascript">
+	function editTask(task){
+		var taskWindow = null;
+		if(task){
+			
+    	taskWindow = new TaskWindow(task, ge, 
+            	
+	    	function (action) {
+	            
+	            if (action == 'ok') {
+	                try {
+	                    var taskData = taskWindow.getData();
+	                    ge.editor.updateTask(task, taskData);
+	                } catch (ex) {
+	                    alert("error:"+ex.message);
+	                    return false;
+	                }
+	            }
+	            
+	        }
+            	
+      );
+            
+		}else{
+			alert("任务有误");
+		}
+	}
+</script>
 
 
 

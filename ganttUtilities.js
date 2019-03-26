@@ -595,3 +595,20 @@ function goToPage(url) {
   if (!canILeave()) return;
   window.location.href = url;
 }
+
+function getDateFormat(time) {
+  time = time || new Date().getTime();
+    time = new Date(parseInt(time));
+    var y = time.getFullYear(),
+        m = time.getMonth() + 1,
+        d = time.getDate();
+    return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d);
+}
+
+function isEmpty(str){
+    if(typeof str == "undefined" || str == null || str === "" || str == "undefined"){
+        return true;
+    }else{
+        return false;
+    }
+}

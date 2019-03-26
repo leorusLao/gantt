@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>window</title>
+	</head>
+	<body>
+		
+		<div class="win-body">
+			
+			<div id="win-base">
+				<table style="font-size:12px;width: 100%;">
+		            <tr>
+		            	<td>code/short name：</td>
+		                <td><input id="twin_code" type="text" /></td>
+		            </tr>
+		            <tr>
+		            	<td>name：</td>
+		                <td colspan="3">
+		                	<input id="twin_name" type="text" style="width: 100%;margin-right: 10px;" />
+		                </td>
+		            </tr>
+		            <tr>
+		            	<td>duration：</td>
+		                <td><input id="twin_duration" type="number" value="0" minValue="0" maxValue="10000" /></td>
+		            </tr>
+		            <tr>
+		                <td>start：</td>
+		                <td colspan="3">
+		                	<input id="twin_start" type="text" class="Wdate" onclick="var meStart=document.getElementById('twin_start');WdatePicker({onpicked:function(){meStart.onchange();}});" style="margin-right: 5px;"/>
+		                	<input id="twin_startIsMilestone" type="checkbox" /> is milestone
+		                </td>
+		            </tr>
+		            <tr>
+		                <td>end：</td>
+		                <td colspan="3">
+		                	<input id="twin_end" type="text" class="Wdate" onclick="var meEnd=document.getElementById('twin_end');WdatePicker({onpicked:function(){meEnd.onchange();}});" style="margin-right: 5px;" />
+		                	<input id="twin_startIsMilestone" type="checkbox" /> is milestone
+		                </td>
+		            </tr>
+		            <tr>
+		                <td>status：</td>
+		                <td>
+		                	<select id="twin_status">
+		                		<option value="STATUS_ACTIVE" class="taskStatus" status="STATUS_ACTIVE">active</option>
+		                		<option value="STATUS_WAITING" class="taskStatus" status="STATUS_WAITING">waiting</option>
+		                		<option value="STATUS_SUSPENDED" class="taskStatus" status="STATUS_SUSPENDED">suspended</option>
+		                		<option value="STATUS_DONE" class="taskStatus" status="STATUS_DONE">completed</option>
+		                		<option value="STATUS_FAILED" class="taskStatus" status="STATUS_FAILED">failed</option>
+		                		<option value="STATUS_UNDEFINED" class="taskStatus" status="STATUS_UNDEFINED">undefined</option>
+		                	</select>
+		                </td>
+		                <td>progress：</td>
+		                <td>
+		                	<input id="twin_progress" type="number" min="0" max="100" />
+		                </td>
+		            </tr>
+		        </table>
+			</div>
+			
+			<div id="win-tabs" class="win-tabs" style="height: calc(100% - 197px);">
+				
+			    <div name="pre" title="predecessor">
+					<div class="win-panel">
+						<div id="twin_filebar" class="win-toolbar">
+			                <a id="twin_linkadd" class="win-button" title="add">add</a>
+			                <a id="twin_linkdel" class="win-button" title="del">del</a>
+			            </div>
+			            <div id="twin_pregrid" class="win-datagrid">
+			            	
+			            	<div class="columns">
+			                    <div field="Id" width="25%">id</div>
+                    			<div field="Name" width="35%" editor="{type: 'combobox', valueField: 'id', textField: 'name'}">name</div>
+                    			<div field="Type" width="30%" editor="{type: 'combobox', valueField: 'id', textField: 'name'}">type</div>
+                    			<div field="Lag" width="10%" editor="{type: 'spinner', minValue: -1000, maxValue: 1000}">lag</div>
+			                </div>
+			            	
+			            </div>
+					</div>
+			    </div>
+			    
+			    <div name="res" title="resources">
+					<div class="win-panel">
+						<div id="twin_resbar" class="win-toolbar">
+			                <a id="twin_resadd" class="win-button" title="add">add</a>
+			                <a id="twin_resdel" class="win-button" title="del">del</a>
+			            </div>
+			            <div id="twin_resgrid" class="win-datagrid">
+			            	
+			            	<div class="columns">
+			                    <div field="Type" width="20%">type</div>
+			                    <div field="Code" width="20%">code</div>s
+			                    <div field="Name" width="20%">name</div>
+			                    <div field="Quantities" width="12%">quantities</div>
+			                    <div field="Unit" width="12%">unit</div>
+			                    <div field="Cost" width="16%">cost</div>
+			                </div>
+			            	
+			            </div>
+					</div>
+			    </div>
+			    
+			    <div name="note" title="note">
+					<textarea id="twin_note" class="win-full-textarea"></textarea>
+			    </div>
+				
+			</div>
+			
+		</div>	
+		
+		<div class="win-footer">
+			<button id="twin_ok" class="expect">ok</button>
+			<button id="twin_cancel">cancel</button>
+		</div>
+			
+	</body>
+</html>

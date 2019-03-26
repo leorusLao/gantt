@@ -84,6 +84,13 @@ function GanttMaster() {
   this.__redoStack = [];
   this.__inUndoRedo = false; // a control flag to avoid Undo/Redo stacks reset when needed
 
+  this.PredecessorLinkType = [
+    {"id": 0, "name": "Start-Start(SS)"},
+    {"id": 1, "name": "Finish-Start(FS)"},
+    {"id": 2, "name": "Start-Finish(SF)"},
+    {"id": 3, "name": "Finish-Finish(FF)"}
+  ];
+
   Date.workingPeriodResolution=1; //by default 1 day
 
   var self = this;

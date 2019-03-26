@@ -247,7 +247,7 @@ GridEditor.prototype.bindRowEvents = function (task, taskRow) {
   self.bindRowExpandEvents(task, taskRow);
 
   if (this.master.permissions.canSeePopEdit) {
-    taskRow.find(".edit").click(function () {self.openFullEditor(task, false)});
+    taskRow.find(".edit").click(function () { editTask(task)} );
 
     taskRow.dblclick(function (ev) { //open editor only if no text has been selected
       if (window.getSelection().toString().trim()=="")
