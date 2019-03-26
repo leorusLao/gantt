@@ -937,6 +937,8 @@ Task.prototype.indent = function () {
       this.master.changeTaskDates(this, parent.start, new_end);
     }
 
+    //update serial string
+    this.master.updateSerialString();
 
     //recompute depends string
     this.master.updateDependsStrings();
@@ -983,6 +985,9 @@ Task.prototype.outdent = function () {
     //remove links from me to my new children
     chds[i].setPeriod(chds[i].start + 1, chds[i].end + 1);
   }
+
+  //update serial string
+  this.master.updateSerialString();
 
   //recompute depends string
   this.master.updateDependsStrings();
@@ -1036,6 +1041,9 @@ Task.prototype.moveUp = function () {
     var rows = this.master.editor.element.find("tr[taskid]");
     var domBlockToMove = rows.slice(row, row + descNumber + 1);
     rows.eq(newRow).before(domBlockToMove);
+
+    //update serial string
+    this.master.updateSerialString();
 
     //recompute depends string
     this.master.updateDependsStrings();
@@ -1095,6 +1103,9 @@ Task.prototype.moveDown = function () {
     var aft = rows.eq(newRow - 1);
     var domBlockToMove = rows.slice(row, row + descNumber + 1);
     aft.after(domBlockToMove);
+
+    //update serial string
+    this.master.updateSerialString();
 
     //recompute depends string
     this.master.updateDependsStrings();

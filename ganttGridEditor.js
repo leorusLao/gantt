@@ -172,6 +172,8 @@ GridEditor.prototype.refreshTaskRow = function (task) {
   row.find("[name=depends]").val(task.depends);
   row.find(".taskAssigs").html(task.getAssigsString());
 
+  row.find(".serial").html(task.serial);
+
   //manage collapsed
   if (task.collapsed)
     row.addClass("collapsed");

@@ -329,6 +329,32 @@ GanttMaster.prototype.updateDependsStrings = function () {
 
 };
 
+//update serial strings
+GanttMaster.prototype.updateSerialString = function (task, row) {
+  //remove all deps
+  var pno = 1;
+  for (var i = 0; i < this.tasks.length; i++) {
+    var task = this.tasks[i];
+    task.serial = "";
+    
+    if(task.level==0){
+      task.serial = pno;
+      pno++;
+    }else{
+      var par = task.getParent(),
+        childs = par.getChildren(),
+        no = 1; 
+    for(var j=0;j<childs.length;j++){
+      if(childs[j]==task){
+        no = j+1;
+        break;
+      }
+    }
+      task.serial = par.serial + "-" + no;
+    }
+  }
+};
+
 GanttMaster.prototype.removeLink = function (fromTask, toTask) {
   //console.debug("removeLink");
   if (!this.permissions.canWrite || (!fromTask.canWrite && !toTask.canWrite))
@@ -400,6 +426,9 @@ GanttMaster.prototype.addTask = function (task, row) {
     //recompute depends string
     this.updateDependsStrings();
   }
+
+  //update serial string
+  this.updateSerialString();
 
   //add Link collection in memory
   var linkLoops = !this.updateLinks(task);
@@ -546,6 +575,9 @@ GanttMaster.prototype.loadTasks = function (tasks, selectedRow) {
       this.gantt.addTask(task);
     }
   }
+
+  //update serial string
+  this.updateSerialString();
 
   //this.editor.fillEmptyLines();
   //prof.stop();
@@ -1106,6 +1138,9 @@ GanttMaster.prototype.deleteCurrentTask = function (taskId) {
 
     //recompute depends string
     self.updateDependsStrings();
+
+    //update serial string
+    self.updateSerialString();
 
     //redraw
     self.taskIsChanged();
