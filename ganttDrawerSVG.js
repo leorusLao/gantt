@@ -526,7 +526,7 @@ Ganttalendar.prototype.drawLink = function (from, to, type) {
   //console.debug("drawLink")
   var self = this;
   var peduncolusSize = 10;
-
+  
   /**
    * Given an item, extract its rendered position
    * width and height into a structure.
@@ -558,6 +558,8 @@ Ganttalendar.prototype.drawLink = function (from, to, type) {
       var fx1 = rectFrom.left;
       var fx2 = rectFrom.left + rectFrom.width;
       var fy = rectFrom.height / 2 + rectFrom.top;
+      
+      fy = fy - 4;
 
       var tx1 = rectTo.left;
       var tx2 = rectTo.left + rectTo.width;
@@ -594,10 +596,10 @@ Ganttalendar.prototype.drawLink = function (from, to, type) {
         p.move(fx2, fy)
           .line((tx1 - fx2) / 2 - r, 0, true)
           .arc(r, r, 90, false, !up, r, fup * r, true)
-          .line(0, ty - fy - fup * 2 * r + arrowOffset, true)
+          .line(0, ty - fy - fup * 2 * r - arrowOffset, true)
           .arc(r, r, 90, false, up, r, fup * r, true)
           .line((tx1 - fx2) / 2 - r, 0, true);
-        image.attr({x:tx1 - 5, y:ty - 5 + arrowOffset});
+        image.attr({x:tx1 - 5, y:ty - 5 - arrowOffset});
       }
 
       group.find("path").attr({d:p.path()});
@@ -624,23 +626,273 @@ Ganttalendar.prototype.drawLink = function (from, to, type) {
     jqGroup.addClass("linkGroup");
     return jqGroup;
   }
+  
+  
+  /**
+   * The two rendering method, which paints a start to start dependency.
+   */
+  function drawStartToStart(from, to, ps) {
+    var svg = self.svg;
+
+    //this function update an existing link
+    function update() {
+      var group = $(this);
+      var from = group.data("from");
+      var to = group.data("to");
+
+      var rectFrom = buildRectFromTask(from);
+      var rectTo = buildRectFromTask(to);
+
+      var fx1 = rectFrom.left;
+      var fx2 = rectFrom.left + rectFrom.width;
+      var fy = rectFrom.height / 2 + rectFrom.top;
+      
+      fy = fy - 4;
+
+      var tx1 = rectTo.left;
+      var tx2 = rectTo.left + rectTo.width;
+      var ty = rectTo.height / 2 + rectTo.top;
+
+    //为了绕弯
+      var tooClose = tx1 < fx1 + 2 * ps;
+      
+      var r = 5; //radius
+      var arrowOffset = 5;
+      var up = fy > ty;
+      var fup = up ? -1 : 1;
+      
+      var prev = fx2 + 2 * ps > tx1;
+      var fprev = prev ? -1 : 1;
+
+      var image = group.find("image");
+      var p = svg.createPath();
+      
+      if (tooClose) {
+        p.move(fx1, fy)
+          .line(-ps, 0, true)
+          .line(tx1-fx1, 0, true)
+          .line(0, ty - fy - fup * r - arrowOffset, true)
+          .arc(r, r, 90, false, up, r, fup * r, true)
+          .line(ps, 0, true);
+        image.attr({x:tx1 - 5, y:ty - 5 - arrowOffset});
+      } else {
+        p.move(fx1, fy)
+          .line(-ps, 0, true)
+          .line(0, ty - fy - fup * r - arrowOffset, true)
+          .arc(r, r, 90, false, up, r, fup * r, true)
+          .line(tx1 - fx1 + ps, 0, true);
+        image.attr({x:tx1 - 5, y:ty - 5 - arrowOffset});
+      }
+
+      group.find("path").attr({d:p.path()});
+    }
+
+
+    // create the group
+    var group = svg.group(self.linksGroup, "" + from.id + "-" + to.id);
+    svg.title(group, from.name + " -> " + to.name);
+
+    var p = svg.createPath();
+
+    //add the arrow
+    svg.image(group, 0, 0, 5, 10, self.master.resourceUrl +"linkArrow.png");
+    //create empty path
+    svg.path(group, p, {class:"taskLinkPathSVG"});
+
+    //set "from" and "to" to the group, bind "update" and trigger it
+    var jqGroup = $(group).data({from:from, to:to }).attr({from:from.id, to:to.id}).on("update", update).trigger("update");
+
+    if (self.showCriticalPath && from.isCritical && to.isCritical)
+      jqGroup.addClass("critical");
+
+    jqGroup.addClass("linkGroup");
+    return jqGroup;
+  }
+  
+  
+  /**
+   * The two rendering method, which paints a start to start dependency.
+   */
+  function drawEndToStart(from, to, ps) {
+    var svg = self.svg;
+
+    //this function update an existing link
+    function update() {
+      var group = $(this);
+      var from = group.data("from");
+      var to = group.data("to");
+
+      var rectFrom = buildRectFromTask(from);
+      var rectTo = buildRectFromTask(to);
+
+      var fx1 = rectFrom.left;
+      var fx2 = rectFrom.left + rectFrom.width;
+      var fy = rectFrom.height / 2 + rectFrom.top;
+      
+      fy = fy - 4;
+
+      var tx1 = rectTo.left;
+      var tx2 = rectTo.left + rectTo.width;
+      var ty = rectTo.height / 2 + rectTo.top;
+
+    //为了绕弯
+      var tooClose = tx2 >= fx1;
+      
+      var r = 5; //radius
+      var arrowOffset = 5;
+      var up = fy > ty;
+      var fup = up ? -1 : 1;
+      
+      var prev = fx2 + 2 * ps > tx1;
+      var fprev = prev ? -1 : 1;
+
+      var image = group.find("image");
+      var p = svg.createPath();
+      
+      if (tooClose) {
+        var firstLine = fup * (rectFrom.height / 2 + 2);
+        p.move(fx1, fy)
+          .line(-ps, 0, true)
+          .line(0, firstLine, true)
+          .line(2 * ps + (tx2 - fx1), 0, true)
+          .line(0, (Math.abs(ty - fy) - Math.abs(firstLine)) * fup - arrowOffset, true)
+          .line(-ps, 0, true);
+        image.attr({x:tx2, y:ty - 5 - arrowOffset});
+      } else {
+        p.move(fx1, fy)
+          .line(-((fx1-tx2)/2), 0, true)
+          .line(0, ty - fy - arrowOffset, true)
+          .line(-((fx1-tx2)/2), 0, true);
+        image.attr({x:tx2, y:ty - 5 - arrowOffset});
+      }
+
+      group.find("path").attr({d:p.path()});
+    }
+
+
+    // create the group
+    var group = svg.group(self.linksGroup, "" + from.id + "-" + to.id);
+    svg.title(group, from.name + " -> " + to.name);
+
+    var p = svg.createPath();
+
+    //add the arrow
+    svg.image(group, 0, 0, 5, 10, self.master.resourceUrl +"linkArrow_left.png");
+    //create empty path
+    svg.path(group, p, {class:"taskLinkPathSVG"});
+
+    //set "from" and "to" to the group, bind "update" and trigger it
+    var jqGroup = $(group).data({from:from, to:to }).attr({from:from.id, to:to.id}).on("update", update).trigger("update");
+
+    if (self.showCriticalPath && from.isCritical && to.isCritical)
+      jqGroup.addClass("critical");
+
+    jqGroup.addClass("linkGroup");
+    return jqGroup;
+  }
+  
+  
+  /**
+   * The two rendering method, which paints a end to end dependency.
+   */
+  function drawEndToEnd(from, to, ps) {
+    var svg = self.svg;
+
+    //this function update an existing link
+    function update() {
+      var group = $(this);
+      var from = group.data("from");
+      var to = group.data("to");
+
+      var rectFrom = buildRectFromTask(from);
+      var rectTo = buildRectFromTask(to);
+
+      var fx1 = rectFrom.left;
+      var fx2 = rectFrom.left + rectFrom.width;
+      var fy = rectFrom.height / 2 + rectFrom.top;
+      
+      fy = fy - 4;
+
+      var tx1 = rectTo.left;
+      var tx2 = rectTo.left + rectTo.width;
+      var ty = rectTo.height / 2 + rectTo.top;
+
+    //为了绕弯
+      var tooClose = tx2 > fx2;
+      
+      var r = 5; //radius
+      var arrowOffset = 5;
+      var up = fy > ty;
+      var fup = up ? -1 : 1;
+      
+      var prev = fx2 + 2 * ps > tx1;
+      var fprev = prev ? -1 : 1;
+
+      var image = group.find("image");
+      var p = svg.createPath();
+      
+      if (tooClose) {
+        p.move(fx2, fy)
+          .line(ps, 0, true)
+          .line(tx2 - fx2, 0, true)
+          .line(0, ty - fy - arrowOffset, true)
+          .line(-ps, 0, true)
+        image.attr({x:tx2, y:ty - 5 - arrowOffset});
+      } else {
+        p.move(fx2, fy)
+          .line(ps, 0, true)
+          .line(0, ty - fy - arrowOffset, true)
+          .line(tx2 - fx2 - ps, 0, true);
+        image.attr({x:tx2, y:ty - 5 - arrowOffset});
+      }
+
+      group.find("path").attr({d:p.path()});
+    }
+
+
+    // create the group
+    var group = svg.group(self.linksGroup, "" + from.id + "-" + to.id);
+    svg.title(group, from.name + " -> " + to.name);
+
+    var p = svg.createPath();
+
+    //add the arrow
+    svg.image(group, 0, 0, 5, 10, self.master.resourceUrl +"linkArrow_left.png");
+    //create empty path
+    svg.path(group, p, {class:"taskLinkPathSVG"});
+
+    //set "from" and "to" to the group, bind "update" and trigger it
+    var jqGroup = $(group).data({from:from, to:to }).attr({from:from.id, to:to.id}).on("update", update).trigger("update");
+
+    if (self.showCriticalPath && from.isCritical && to.isCritical)
+      jqGroup.addClass("critical");
+
+    jqGroup.addClass("linkGroup");
+    return jqGroup;
+  }
 
 
   /**
    * A rendering method which paints a start to start dependency.
    */
-  function drawStartToStart(from, to) {
+  /*function drawStartToStart(from, to) {
     console.error("StartToStart not supported on SVG");
     var rectFrom = buildRectFromTask(from);
     var rectTo = buildRectFromTask(to);
-  }
-
+  }*/
+  
+  var typeAggregat = ["drawStartToStart", "drawStartToEnd", "drawEndToStart", "drawEndToEnd"];
+  
   var link;
   // Dispatch to the correct renderer
-  if (type == 'start-to-start') {
+  /*if (type == 'start-to-start') {
     link = drawStartToStart(from, to, peduncolusSize);
   } else {
     link = drawStartToEnd(from, to, peduncolusSize);
+  }*/
+ 
+  if(typeAggregat.hasOwnProperty(type)){
+      var link = eval(typeAggregat[type] + "(from, to, peduncolusSize)");
   }
 
   // in order to create a dependency you will need permissions on both tasks
@@ -691,7 +943,7 @@ Ganttalendar.prototype.redrawLinks = function () {
       //if link is out of visible screen continue
       if(Math.max(rowA,rowB)<self.master.firstVisibleTaskIndex || Math.min(rowA,rowB)>self.master.lastVisibleTaskIndex) continue;
 
-      self.drawLink(link.from, link.to);
+      self.drawLink(link.from, link.to, link.type);
     }
     //prof.stop();
   });

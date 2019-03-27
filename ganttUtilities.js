@@ -427,6 +427,19 @@ function computeStartDate(start) {
   return d;
 }
 
+function computeStartByDuration(end, duration) {
+  //console.debug("computeEndByDuration start ",d,duration)
+  var d = new Date(end);
+  var q = duration - 1;
+  while (q > 0) {
+    d.setDate(d.getDate() - 1);
+    if (!isHoliday(d))
+      q--;
+  }
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+}
+
 function computeEnd(end) {
   return computeEndDate(end).getTime()
 }

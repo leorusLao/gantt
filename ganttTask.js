@@ -373,18 +373,31 @@ Task.prototype.propagateToInferiors = function (end) {
 
 //<%---------- COMPUTE START BY SUPERIORS ---------------------- --%>
 Task.prototype.computeStartBySuperiors = function (proposedStart) {
-  //if depends -> start is set to max end + lag of superior
-  var supEnd=proposedStart;
-  var sups = this.getSuperiors();
-  if (sups && sups.length > 0) {
-    supEnd=0;
-    for (var i = 0; i < sups.length; i++) {
-      var link = sups[i];
-      supEnd = Math.max(supEnd, incrementDateByUnits(new Date(link.from.end), link.lag));
+    //if depends -> start is set to max end + lag of superior
+    var supEnd = proposedStart;
+    var sups = this.getSuperiors();
+    if (sups && sups.length > 0) {
+        //var startMax = this.startMax,
+        var typeAggregat = ['start', 'end', 'start', 'end'],
+            Finish = [0,1].indexOf(parseInt(sups[0].type)) < 0 ? 1 : 0;
+
+        supEnd = 0;
+        
+        for (var i = 0; i < sups.length; i++) {
+            var link = sups[i];
+            var cdate = link.from[typeAggregat[link.type]];
+            supEnd = Math.max(supEnd, incrementDateByUnits(new Date(cdate), link.lag));
+        }
+
+        if(Finish){
+            supEnd -= 1;
+            supEnd = computeStartByDuration(supEnd, this.duration);
+        }else{
+            supEnd += 1;
+        }
+        var dateTime = new Date(supEnd);
     }
-    supEnd+=1;
-  }
-  return computeStart(supEnd);
+    return computeStart(supEnd);
 };
 
 
@@ -1211,10 +1224,11 @@ Task.prototype.canStatusBeChangedTo=function(newStatus) {
 
 
 //<%------------------------------------------------------------------------  LINKS OBJECT ---------------------------------------------------------------%>
-function Link(taskFrom, taskTo, lagInWorkingDays) {
+function Link(taskFrom, taskTo, lagInWorkingDays, LinksType) {
   this.from = taskFrom;
   this.to = taskTo;
   this.lag = lagInWorkingDays;
+  this.type = LinksType;
 }
 
 
